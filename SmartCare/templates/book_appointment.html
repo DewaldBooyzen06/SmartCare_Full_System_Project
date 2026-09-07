@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Appointment - SmartCare Medical Clinic{% endblock %}
+
+{% block content %}
+<div class="form-page-wrapper">
+    <div class="form-card">
+        <div class="form-header">
+            <h2>Schedule Patient Consultation</h2>
+            <p>Select patient, attending physician, date, and consultation time. Overlapping bookings are blocked.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('book_appointment') }}" class="clinical-form">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label for="patient_number">Select Registered Patient *</label>
+                    <select id="patient_number" name="patient_number" required>
+                        <option value="">-- Choose Patient --</option>
+                        {% for p in patients %}
+                        <option value="{{ p.PatientNumber }}">{{ p.FirstName }} {{ p.LastName }} (File #{{ p.PatientNumber }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="doctor_id">Attending Doctor *</label>
+                    <select id="doctor_id" name="doctor_id" required>
+                        <option value="">-- Choose Doctor --</option>
+                        {% for d in doctors %}
+                        <option value="{{ d.DoctorID }}">{{ d.FullName }} - {{ d.Specialisation }} ({{ d.RoomNumber }}) [{{ d.Status }}]</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label for="appointment_date">Appointment Date *</label>
+                    <input type="date" id="appointment_date" name="appointment_date" min="{{ today }}" value="{{ today }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="appointment_time">Time Slot *</label>
+                    <select id="appointment_time" name="appointment_time" required>
+                        <option value="08:00">08:00 AM</option>
+                        <option value="08:30">08:30 AM</option>
+                        <option value="09:00" selected>09:00 AM</option>
+                        <option value="09:30">09:30 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="10:30">10:30 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="11:30">11:30 AM</option>
+                        <option value="14:00">02:00 PM</option>
+                        <option value="14:30">02:30 PM</option>
+                        <option value="15:00">03:00 PM</option>
+                        <option value="15:30">03:30 PM</option>
+                        <option value="16:00">04:00 PM</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Clinical Reason / Consultation Notes</label>
+                <textarea id="notes" name="notes" rows="3" placeholder="e.g. Routine follow-up, ECG review, prescription renewal..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline">Cancel</a>
+                <button type="submit" class="btn btn-primary">Confirm Appointment</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

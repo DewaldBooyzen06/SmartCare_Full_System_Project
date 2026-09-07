@@ -1,0 +1,8 @@
+{
+  "name": "SmartCare Medical Clinic System",
+  "description": "SmartCare Medical Clinic appointment management system featuring patient registration, doctor schedules, double-booking prevention, relational records, and clinical dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

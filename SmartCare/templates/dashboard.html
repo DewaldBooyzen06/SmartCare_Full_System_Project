@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - SmartCare Medical Clinic{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <div class="page-header">
+        <div>
+            <h1>Clinical Overview & KPI Dashboard</h1>
+            <p class="subtitle">Live patient counts, attending doctors, and consultation schedule.</p>
+        </div>
+        <div class="header-actions">
+            <a href="{{ url_for('register_patient') }}" class="btn btn-secondary">+ Register Patient</a>
+            <a href="{{ url_for('book_appointment') }}" class="btn btn-primary">+ Book Appointment</a>
+        </div>
+    </div>
+
+    <!-- 4 KPI Metrics -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-label">Registered Patients</div>
+            <div class="kpi-value">{{ total_patients }}</div>
+            <div class="kpi-sub">8-digit hospital files</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Attending Doctors</div>
+            <div class="kpi-value">{{ total_doctors }}</div>
+            <div class="kpi-sub">Medical specialists active</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Total Appointments</div>
+            <div class="kpi-value">{{ total_appointments }}</div>
+            <div class="kpi-sub">Historic & scheduled</div>
+        </div>
+        <div class="kpi-card highlight">
+            <div class="kpi-label">Upcoming Consultations</div>
+            <div class="kpi-value">{{ upcoming_appointments }}</div>
+            <div class="kpi-sub">Zero double-bookings</div>
+        </div>
+    </div>
+
+    <!-- Appointments Table -->
+    <div class="table-card">
+        <div class="table-header">
+            <h3>Scheduled Appointments</h3>
+            <span>Today is {{ today }}</span>
+        </div>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Appt #</th>
+                        <th>Date & Time</th>
+                        <th>Patient</th>
+                        <th>Attending Doctor</th>
+                        <th>Status</th>
+                        <th>Clinical Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appt in appointments %}
+                    <tr>
+                        <td class="font-mono">#{{ appt.AppointmentNumber }}</td>
+                        <td>
+                            <strong>{{ appt.AppointmentTime }}</strong><br>
+                            <small class="text-muted">{{ appt.AppointmentDate }}</small>
+                        </td>
+                        <td>
+                            <strong>{{ appt.FirstName }} {{ appt.LastName }}</strong><br>
+                            <small class="text-muted">File: {{ appt.PatientNumber }} • Tel: {{ appt.ContactNumber }}</small>
+                        </td>
+                        <td>
+                            <strong>{{ appt.DoctorName }}</strong><br>
+                            <small class="text-muted">{{ appt.Specialisation }} ({{ appt.RoomNumber }})</small>
+                        </td>
+                        <td>
+                            <span class="status-badge status-{{ appt.AppointmentStatus.lower() }}">
+                                {{ appt.AppointmentStatus }}
+                            </span>
+                        </td>
+                        <td>{{ appt.Notes or '—' }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No appointments recorded yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

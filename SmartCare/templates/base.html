@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SmartCare Medical Clinic{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <span class="brand-badge">SC</span>
+                <div class="brand-text">
+                    <span class="brand-title">SmartCare Medical Clinic</span>
+                    <span class="brand-subtitle">Clinical Appointment Management System</span>
+                </div>
+            </div>
+            {% if session.get('user_id') %}
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('register_patient') }}" class="nav-link">Register Patient</a>
+                <a href="{{ url_for('book_appointment') }}" class="nav-link">Book Appointment</a>
+            </nav>
+            <div class="user-meta">
+                <span class="user-name">{{ session.get('full_name') }}</span>
+                <span class="user-role">{{ session.get('role') }}</span>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Sign Out</a>
+            </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 SmartCare Medical Clinic • POPIA & HIPAA Compliant Healthcare Management</p>
+    </footer>
+</body>
+</html>
